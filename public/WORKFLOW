@@ -1,0 +1,96 @@
+Upstash is a serverless Redis database with a REST API interface, which makes it great for serverless or JAMstack-style apps. It stores data as key-value pairs (not rows like SQL).
+
+🔄 Workflow With Redis Upstash
+⚙️ 1. Frontend Makes a GET Request
+js
+Copy
+Edit
+const response = await fetch('/api/users');
+This hits your backend route:
+GET /api/users
+
+🖥️ 2. Backend Fetches Data from Redis Upstash
+Here, your backend connects to Upstash Redis, likely using:
+
+REST API (via fetch or axios)
+
+or @upstash/redis npm package
+
+Example using @upstash/redis:
+js
+Copy
+Edit
+import { Redis } from '@upstash/redis';
+
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN
+});
+
+app.get('/api/users', async (req, res) => {
+  const users = await redis.get('all_users'); // 'all_users' is the Redis key
+  res.json(users || []);
+});
+This assumes all users are stored as a single JSON array under the key 'all_users'.
+
+Alternatively, you could store each user under their matric number:
+
+bash
+Copy
+Edit
+HSET user:MAT1234 fullName "John Doe" department "CS" ...
+📤 3. Backend Sends JSON to Frontend
+The backend returns the parsed JSON:
+
+json
+Copy
+Edit
+[
+  {
+    "matricNumber": "MAT1234",
+    "fullName": "John Doe",
+    "department": "CS",
+    "level": "400",
+    "clearanceStatus": "Cleared"
+  }
+]
+🖼️ 4. Frontend Renders the Users
+displayUsers(allUsers) populates the cards on the page — as before.
+
+➕ Adding/Editing Users
+When submitting a form:
+
+Frontend sends a POST or PUT to your API.
+
+Backend does something like:
+
+js
+Copy
+Edit
+await redis.hset(`user:${matricNumber}`, {
+  fullName,
+  department,
+  level,
+  clearanceStatus
+});
+
+// Optionally update global user list
+const users = await redis.get('all_users') || [];
+const updatedUsers = [...users.filter(u => u.matricNumber !== matricNumber), newUser];
+await redis.set('all_users', updatedUsers);
+🧩 TL;DR Flow Recap with Redis Upstash
+Step	What Happens
+1	Frontend sends request to /api/users
+2	Backend uses @upstash/redis or REST API to GET from Redis
+3	Redis returns users (from all_users or individual user:* keys)
+4	Backend sends users as JSON
+5	Frontend displays users in cards
+6	On add/edit, data is SET or HSET to Redis, then list reloaded
+
+Let me know if you want:
+
+A Redis schema suggestion (flat key vs hash structure)
+
+Help integrating pagination or key scanning (SCAN in Redis)
+
+Caching strategies or TTLs for user data

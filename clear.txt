@@ -1,0 +1,93 @@
+clear
+
+// login.js - Handles the login functionality for the E-Clearance System
+
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('loginForm');
+    const loginError = document.getElementById('login-error');
+    
+    // Check if there's a stored session
+    checkExistingSession();
+    
+    // Handle login form submission
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const matricNumber = document.getElementById('matricNumber').value;
+        const password = document.getElementById('password').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
+        
+        // Validate inputs
+        if (!matricNumber || !password) {
+            showError('Please enter both matric number and password.');
+            return;
+        }
+        
+        // Simulate API call to backend for authentication
+        authenticateUser(matricNumber, password, rememberMe);
+    });
+    
+    // Function to authenticate user
+    function authenticateUser(matricNumber, password, rememberMe) {
+        // In a real application, this would be an API call to your backend
+        // For demo purposes, we'll simulate a fetch request with a timeout
+        
+        // Show loading state
+        const submitBtn = loginForm.querySelector('button[type="submit"]');
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging in...';
+        submitBtn.disabled = true;
+        
+        setTimeout(() => {
+            // This is where you would normally check credentials against your database
+            // For demo, we'll accept any non-empty values
+            if (matricNumber.trim() && password.trim()) {
+                // Create a mock user object (this would come from your backend)
+                const user = {
+                    id: 123,
+                    matricNumber: matricNumber,
+                    fullName: "John Doe",
+                    department: "Computer Science",
+                    level: 400,
+                    session: "2024/2025",
+                    profileImage: `https://api.dicebear.com/7.x/avataaars/svg?seed=${matricNumber}`
+                };
+                
+                // Store user data in sessionStorage or localStorage based on rememberMe
+                if (rememberMe) {
+                    localStorage.setItem('user', JSON.stringify(user));
+                    localStorage.setItem('isLoggedIn', 'true');
+                } else {
+                    sessionStorage.setItem('user', JSON.stringify(user));
+                    sessionStorage.setItem('isLoggedIn', 'true');
+                }
+                
+                // Redirect to dashboard
+                window.location.href = 'dashboard.html';
+            } else {
+                showError('Invalid credentials. Please try again.');
+                submitBtn.innerHTML = 'Login';
+                submitBtn.disabled = false;
+            }
+        }, 1500); // Simulate network delay
+    }
+    
+    // Function to check if user is already logged in
+    function checkExistingSession() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') || sessionStorage.getItem('isLoggedIn');
+        
+        if (isLoggedIn === 'true') {
+            window.location.href = 'dashboard.html';
+        }
+    }
+    
+    // Function to show error message
+    function showError(message) {
+        loginError.textContent = message;
+        loginError.classList.remove('d-none');
+        
+        // Hide error after 3 seconds
+        setTimeout(() => {
+            loginError.classList.add('d-none');
+        }, 3000);
+    }
+});

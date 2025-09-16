@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - University E-Clearance System</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">University E-Clearance</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="profile.html">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="certificates.html">Certificates</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span class="text-white me-3">Welcome, <span id="studentName">John Doe</span></span>
+                  <button class="btn btn-light btn-sm" id="logoutBtn" onclick="window.location.href='index.html'">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        <div class="row">
+            <!-- Student Info Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow">
+                    <div class="card-body text-center">
+                        <img src="" alt="Student" class="rounded-circle mb-3" width="100" id="studentImage" onerror="this.src='images/user-avatar.png'">
+                        <h5 id="fullName">John Doe</h5>
+                        <p class="text-muted mb-1" id="matricNumber">MAT/2023/001</p>
+                        <p class="text-muted" id="department">Computer Science</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Level
+                            <span id="level" class="badge bg-primary rounded-pill">400</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Session
+                            <span id="session" class="badge bg-primary rounded-pill">2024/2025</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Overall Status
+                            <span id="overallStatus" class="badge bg-warning">Pending</span>
+                        </li>
+                    </ul>
+                    <div class="card-body text-center">
+                        <button id="downloadCertBtn" class="btn btn-success" disabled>
+                            <i class="bi bi-download me-2"></i>Download Certificate
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clearance Requirements Card -->
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Clearance Requirements</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Department</th>
+                                        <th>Requirement</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="requirementsTable">
+                                    <tr>
+                                        <td>Library</td>
+                                        <td>Book Returns</td>
+                                        <td><span class="badge bg-success">Cleared</span></td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Finance</td>
+                                        <td>Tuition Fees</td>
+                                        <td><span class="badge bg-danger">Pending</span></td>
+                                        <td><a href="https://paystack.com/pay/tsvzrxdoi8" class="btn btn-sm btn-primary">Pay Now</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Student Affairs</td>
+                                        <td>ID Card Return</td>
+                                        <td><span class="badge bg-warning">In Progress</span></td>
+                                        <td><button class="btn btn-sm btn-info">View Details</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Department</td>
+                                        <td>Course Registration</td>
+                                        <td><span class="badge bg-success">Cleared</span></td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hostel</td>
+                                        <td>Room Clearance</td>
+                                        <td><span class="badge bg-secondary">Not Applicable</span></td>
+                                        <td>-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clearance History -->
+                <div class="card shadow mt-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Clearance History</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Department</th>
+                                        <th>Status</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="historyTable">
+                                    <tr>
+                                        <td>12 Apr 2025</td>
+                                        <td>Library</td>
+                                        <td><span class="badge bg-success">Cleared</span></td>
+                                        <td>All books returned</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10 Apr 2025</td>
+                                        <td>Department</td>
+                                        <td><span class="badge bg-success">Cleared</span></td>
+                                        <td>Registration complete</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-4">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 University E-Clearance System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="dashboard.js"></script>
+</body>
+</html>
